@@ -28,4 +28,9 @@ public class UserService {
 
         return savedUser != null;
     }
+    
+    @Transactional
+    public User signIn(String email, String password) {
+        return userDao.findByEmailAndPassword(email, password);
+    }
 }
