@@ -36,6 +36,21 @@ public class UserResourceImpl implements UserResource {
 
 	}
 	
+	@POST
+	@Path("/signin")
+	public String signIn(@FormParam("email") String email, @FormParam("password") String password) {
+
+		String responseText = "failure";
+
+		User user = userService.signIn(email, password);
+
+		if (user != null) {
+			responseText = "success";
+		}
+
+		return responseText;
+	}
+	
 
 	
 
