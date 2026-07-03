@@ -1,4 +1,4 @@
-package com.codegnan.app.arsbackend.entiry;
+package com.codegnan.app.arsbackend.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,15 +31,15 @@ public class User {
 	public User() {
 	}
 
-	public User(int userId, String fullName, String email, String password, String role) {
+	public User(int userId, String fullName, String email, String password , String role) {
 		this.userId = userId;
 		this.fullName = fullName;
 		this.email = email;
 		this.password = password;
-		this.role = role;
+		this.role= role;
 	}
 
-	public int getEUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
@@ -54,7 +54,7 @@ public class User {
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -70,10 +70,21 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
+	
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", fullName=" + fullName + ", email=" + email + ", password=" + password + ", role=" + role + "]";
+		return "User [userId=" + userId + ", fullName=" + fullName + ", email=" + email + ", password=" + password
+				+ ", role=" + role + "]";
 	}
 
 }
