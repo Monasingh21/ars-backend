@@ -2,6 +2,7 @@ package com.codegnan.app.arsbackend.resource;
 
 import org.springframework.stereotype.Component;
 
+import com.codegnan.app.arsbackend.entity.Credentials;
 import com.codegnan.app.arsbackend.entity.User;
 import com.codegnan.app.arsbackend.service.UserService;
 
@@ -12,46 +13,51 @@ import jakarta.ws.rs.Path;
 @Component
 @Path("/user")
 public class UserResourceImpl implements UserResource {
-	private UserService userService;
 
-	public UserResourceImpl(UserService userService) {
-	    this.userService = userService;
-	}
+    private UserService userService;
 
-	@POST
-	public String signUp(@FormParam("fname") String fullName,@FormParam("email") String email,@FormParam("password") String password,@FormParam("role") String role) {
-		String responseText = "failure";
+    public UserResourceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
-		User user = new User();
-		user.setFullName(fullName);
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setRole(role);
-		
-		boolean isSignUpSuccessful = userService.signUp(user);
-		if (isSignUpSuccessful) {
-			responseText = "success";
-		}
-		return responseText;
+    @Override
+    @POST
+    @Path("/signup")
+    public String signUp(
+            @FormParam("fullName") String fullName,
+            @FormParam("email") String email,
+            @FormParam("password") String password,
+            @FormParam("role") String role) {
 
-	}
-	
-	@POST
-	@Path("/signin")
-	public String signIn(@FormParam("email") String email, @FormParam("password") String password) {
+        Credentials credentials = new Credentials();
+        credentials.setEmail(email);
+        credentials.setPassword(password);
 
-		String responseText = "failure";
+        User user = new User();
+        user.setFullName(fullName);
+        user.setRole(role);
 
-		User user = userService.signIn(email, password);
+        user.setCredentials(credentials);
+        credentials.setUser(user);
 
-		if (user != null) {
-			responseText = "success";
-		}
+        User returnedUser = userService.signUp(user);
 
-		return responseText;
-	}
-	
+        return returnedUser != null ? "success" : "failure";
+    }
 
-	
+    @Override
+    @POST
+    @Path("/signin")
+    public String signIn(
+            @FormParam("email") String email,
+            @FormParam("password") String password) {
 
+        Credentials credentials = new Credentials();
+        credentials.setEmail(email);
+        credentials.setPassword(password);
+
+        User user = userService.signIn(credentials);
+
+        return user != null ? "success" : "failure";
+    }
 }

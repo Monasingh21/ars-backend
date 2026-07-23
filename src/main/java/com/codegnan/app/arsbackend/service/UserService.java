@@ -1,38 +1,12 @@
 package com.codegnan.app.arsbackend.service;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.codegnan.app.arsbackend.dao.UserDao;
+import com.codegnan.app.arsbackend.entity.Credentials;
 import com.codegnan.app.arsbackend.entity.User;
 
-@Component
-public class UserService {
+public interface UserService {
 
-    @Autowired
-    private UserDao userDao;
+    User signUp(User user);
 
-    @Transactional
-    public boolean signUp(User user) {
+    User signIn(Credentials credentials);
 
-        User existingUser =
-                userDao.findByEmail(user.getEmail());
-
-        if (existingUser != null) {
-            return false;
-        }
-
-        User savedUser = userDao.save(user);
-
-        return savedUser != null;
-    }
-    
-    @Transactional
-    public User signIn(String email, String password) {
-        return userDao.findByEmailAndPassword(email, password);
-    }
-    
-    
 }

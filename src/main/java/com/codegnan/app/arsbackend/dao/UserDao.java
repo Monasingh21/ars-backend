@@ -1,13 +1,11 @@
 package com.codegnan.app.arsbackend.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.codegnan.app.arsbackend.entity.User;
 
-public interface UserDao extends JpaRepository<User, Long>{
-	
-	User findByEmail(String email);
-	
-	User findByEmailAndPassword(String email, String password);
+@Repository
+public interface UserDao extends JpaRepository<User, Integer> {
 
 }

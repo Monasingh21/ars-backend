@@ -1,90 +1,80 @@
 package com.codegnan.app.arsbackend.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_personal")
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	private int userId;
-	@Column(name = "full_name")
-	@NotBlank(message = "Full Name cannot be left blank")
-	private String fullName;
-	@Column(name = "email")
-	@NotBlank(message = "Email cannot be left blank")
-	private String email;
-	@Column(name = "password")
-	@NotBlank(message = "Password cannot be left blank")
-	private String password;
-	@Column(name = "role")
-	@NotBlank(message = "Role cannot be left blank")
-	private String role;
 
-	public User() {
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private int userId;
 
-	public User(int userId, String fullName, String email, String password , String role) {
-		this.userId = userId;
-		this.fullName = fullName;
-		this.email = email;
-		this.password = password;
-		this.role= role;
-	}
+    @Column(name = "full_name")
+    @NotBlank(message = "Full Name cannot be left blank")
+    private String fullName;
 
-	public int getUserId() {
-		return userId;
-	}
+    @Column(name = "role")
+    @NotBlank(message = "Role cannot be left blank")
+    private String role;
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Credentials credentials;
 
-	public String getFullName() {
-		return fullName;
-	}
+    public User() {
+    }
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    public User(int userId, String fullName, String role) {
+        this.userId = userId;
+        this.fullName = fullName;
+        this.role = role;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public int getUserId() {
+        return userId;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getFullName() {
+        return fullName;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public String getRole() {
-		return role;
-	}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
-	
-	
+    public String getRole() {
+        return role;
+    }
 
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", fullName=" + fullName + ", email=" + email + ", password=" + password
-				+ ", role=" + role + "]";
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
 
+    public Credentials getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(Credentials credentials) {
+        this.credentials = credentials;
+    }
+
+    @Override
+    public String toString() {
+        return "User [userId=" + userId +
+                ", fullName=" + fullName +
+                ", role=" + role + "]";
+    }
 }
