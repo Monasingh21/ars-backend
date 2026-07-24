@@ -64,4 +64,50 @@ public class UserServiceImpl implements UserService {
 
         return foundCredentials.getUser();
     }
+    
+    
+    @Override
+    public User updateUser(User user) {
+
+        User existingUser = userDao.findById(user.getUserId()).orElse(null);
+
+        if (existingUser == null) {
+            return null;
+        }
+
+        Credentials existingCredentials = existingUser.getCredentials();
+
+        Credentials emailOwner = credentialsDao.findByEmail(user.getCredentials().getEmail());
+
+        if (emailOwner != null &&
+            emailOwner.getUser().getUserId() != existingUser.getUserId()) {
+            return null;
+        }
+
+        existingUser.setFullName(user.getFullName());
+        existingUser.setRole(user.getRole());
+
+        existingCredentials.setEmail(user.getCredentials().getEmail());
+
+        String encodedPassword = passwordEncoder.encode(user.getCredentials().getPassword());
+        existingCredentials.setPassword(encodedPassword);
+
+        return userDao.save(existingUser);
+    }
+    
+    
+    
+    @Override
+    public boolean deleteUser(int userId) {
+
+        User existingUser = userDao.findById(userId).orElse(null);
+
+        if (existingUser == null) {
+            return false;
+        }
+
+        userDao.delete(existingUser);
+
+        return true;
+    }
 }

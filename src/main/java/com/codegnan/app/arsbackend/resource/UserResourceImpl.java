@@ -6,9 +6,12 @@ import com.codegnan.app.arsbackend.entity.Credentials;
 import com.codegnan.app.arsbackend.entity.User;
 import com.codegnan.app.arsbackend.service.UserService;
 
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 
 @Component
 @Path("/user")
@@ -59,5 +62,42 @@ public class UserResourceImpl implements UserResource {
         User user = userService.signIn(credentials);
 
         return user != null ? "success" : "failure";
+    }
+
+    @Override
+    @PUT
+    @Path("/update")
+    public String updateUser(
+            @FormParam("userId") int userId,
+            @FormParam("fullName") String fullName,
+            @FormParam("email") String email,
+            @FormParam("password") String password,
+            @FormParam("role") String role) {
+
+        Credentials credentials = new Credentials();
+        credentials.setEmail(email);
+        credentials.setPassword(password);
+
+        User user = new User();
+        user.setUserId(userId);
+        user.setFullName(fullName);
+        user.setRole(role);
+
+        user.setCredentials(credentials);
+        credentials.setUser(user);
+
+        User updatedUser = userService.updateUser(user);
+
+        return updatedUser != null ? "success" : "failure";
+    }
+
+    @Override
+    @DELETE
+    @Path("/delete/{userId}")
+    public String deleteUser(@PathParam("userId") int userId) {
+
+        boolean deleted = userService.deleteUser(userId);
+
+        return deleted ? "success" : "failure";
     }
 }
