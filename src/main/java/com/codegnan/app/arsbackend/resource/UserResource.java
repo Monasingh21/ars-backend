@@ -6,4 +6,8 @@ public interface UserResource {
 
     String signIn(String email, String password);
 
+    String updateUser(int userId, String fullName, String email, String password, String role);
+
+    String deleteUser(int userId);
+
 }

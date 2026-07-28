@@ -9,4 +9,8 @@ public interface UserService {
 
     User signIn(Credentials credentials);
 
+    User updateUser(User user);
+
+    boolean deleteUser(int userId);
+
 }
